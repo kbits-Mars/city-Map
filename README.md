@@ -32,7 +32,7 @@ _Este proyecto no tiene ninguna rama por el momento solo la rama master o rama m
 
 ## LICENSE :
 
-Copyright (c): KEVIN PROAÑO INDACOCOCHEA
+Copyright (c): KEVIN PROAÑO INDACOCOCHEA, BONILLA LANDIVAR RICARDO JESUS
 A menos que lo exija la ley aplicable o se acuerde por escrito, el software distribuido bajo la Licencia se distribuye "TAL CUAL",
 SIN GARANTÍAS NI CONDICIONES DE NINGÚN TIPO, ya sea expresa o implícita.
 Consulte la Licencia para conocer los permisos que rigen el idioma específico y

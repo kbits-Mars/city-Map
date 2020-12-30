@@ -13,6 +13,7 @@ import {firebaseApp} from "./app/utils/firebase";
 
 YellowBox.ignoreWarnings([
   'Animated: `useNativeDriver` was not specified. This is a required option and must be explicitly set to `true` or `false`',
+  'Setting a timer'
 ])
 // ------- END OF WARNING SUPPRESSION
 

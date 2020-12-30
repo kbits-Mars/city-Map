@@ -3,31 +3,21 @@ import { StyleSheet, View, ScrollView, Text, Image } from "react-native";
 import { Button } from "react-native-elements";
 import {NavigationHelpersContext, useNavigation} from "@react-navigation/native";
 
-export default function Contactos(){
+export default function Mejores(){
     const navigation = useNavigation();
 
     return(
 
     
             <ScrollView centerContent={true} style={styles.viewBody}>
-              <Image
+              {/* <Image
                 source={require("../../assets/img/map.png")}
                 resizeMode="contain"
                 style={styles.image}
-              />
+              /> */}
         
               <Text style={styles.title}>INTEGRANTES</Text>
-              <Text style={styles.description}>
-              LOJA YAGUAL ROGELIO DAVID
-             
-
-              </Text>
-              <Text style={styles.description}>
-             
-              BAJAÑA DIAZ ELENA DE LOS ANGELES
-              
-
-              </Text>
+            
 
               <Text style={styles.description}>
               
@@ -44,11 +34,7 @@ export default function Contactos(){
 
               </Text>
 
-              <Text style={styles.description}>
-           
-              MORAN CALLE VICTOR ANDRES
-
-              </Text>
+          
 
              
         

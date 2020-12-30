@@ -4,7 +4,7 @@ import { Icon } from "react-native-elements";
 import { firebaseApp } from "../../utils/firebase";
 import firebase from "firebase/app";
 
-export default function Aulas(props) {
+export default function Restaurantes(props) {
   const { navigation } = props;
   const [user, setUser] = useState(null);
   useEffect(() => {
@@ -14,15 +14,15 @@ export default function Aulas(props) {
   }, []);
   return (
     <View style={styles.viewBody}>
-      <Text>Aulas....</Text>
+      <Text>Restaurantes...</Text>
       {user && (
         <Icon
           reverse
           type="material-community"
           name="plus"
-          color="#00a680"
+          color="#F97666"
           containerStyle={styles.btnContainer}
-          onPress={() => navigation.navigate("add-class-rooms")}
+          onPress={() => navigation.navigate("add-restaurants")}
         />
       )}
     </View>

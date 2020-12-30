@@ -26,7 +26,7 @@ const db = firebase.firestore(firebaseApp);
 
 const widthScreen = Dimensions.get("window").width;
 
-export default function AddClassRoomsForm(props) {
+export default function AddRestaurantsForm(props) {
   const { toastRef, setIsLoading, navigation } = props;
   const [classRoomName, setClassRoomName] = useState("");
   const [classRoomSchool, setClassRoomSchool] = useState("");
@@ -69,7 +69,7 @@ export default function AddClassRoomsForm(props) {
            })
            .then(()=>{
             setIsLoading(false);
-            navigation.navigate("class-rooms");
+            navigation.navigate("restaurants");
            }).catch(()=>{
              setIsLoading(false);
              toastRef.current.show("Error al subir la aula, intentelo de nuevo");
@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   btnAddClassRoom: {
-    backgroundColor: "#00a680",
+    backgroundColor: "#F97666",
     margin: 20,
   },
   viewImages: {

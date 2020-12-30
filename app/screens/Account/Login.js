@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   btnRegister: {
-    color: "#063ECA",
+    color: "#F97666",
     fontWeight: "bold",
   },
   divider: {
