@@ -1,6 +1,6 @@
-# **PROYECTO UG-MAP**
+# **PROYECTO City-MAP**
 
-**Este proyecto es una aplicación movil para Android y IOS desarrollada bajo el framework react native con el lenguaje de programación javaScript, es un sistema de navegación para encontrar facultades dentro de una universidad utilizando la API de GOOGLE maps**
+**Este proyecto es una aplicación movil para Android y IOS desarrollada bajo el framework react native con el lenguaje de programación javaScript, es un sistema de navegación para encontrar restaurantes utilizando la API de GOOGLE maps**
 
 ## **DEMO**
 
