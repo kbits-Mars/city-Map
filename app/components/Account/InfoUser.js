@@ -34,9 +34,9 @@ export default function InfoUser(props) {
         {
           updatePhotoUrl();
         })
-        .catch((err)=>{
+        .catch(()=>{
           toastRef.current.show(' error al actualizar la foto de perfil',3000);
-          console.log(err);
+        
         });
       }
 
@@ -45,7 +45,10 @@ export default function InfoUser(props) {
   }
 
   const updateImage= async (uri)=>{
-   
+    
+    setLoadingText("Actualizando foto de perfil");
+    setLoading(true);
+  
     const response= await fetch(uri);
     const blob = await response.blob();
 
@@ -55,7 +58,8 @@ export default function InfoUser(props) {
   }
 
   const updatePhotoUrl= ()=>{
-  
+   
+   
     setLoading(true);
     setLoadingText("Actualizando foto de perfil");
     firebase.
@@ -65,15 +69,15 @@ export default function InfoUser(props) {
     then(async (response)=>{
        const update = {
          photoURL: response
-       }
-
+       };
        await firebase.auth().currentUser.updateProfile(update);
        setLoading(false);
        toastRef.current.show("Se actualizo correctamente la foto de perfil");
-    }).catch(err=>{
+    }).catch(()=>{
       toastRef.current.show(' error al actualizar la foto de perfil',3000);
-      console.log(err);
+      
     })
+   
   }
   
   return (

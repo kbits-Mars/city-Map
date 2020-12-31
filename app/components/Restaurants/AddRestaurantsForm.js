@@ -86,11 +86,11 @@ export default function AddRestaurantsForm(props) {
       map(imagesSelected, async (image) => {
         const response = await fetch(image);
         const blob = await response.blob();
-        const ref= firebase.storage().ref("classRooms").child(uuid());
+        const ref= firebase.storage().ref("restaurants").child(uuid());
          await ref.put(blob).then(async (result) =>{
             await firebase
            .storage()
-           .ref(`classRooms/${result.metadata.name}`)
+           .ref(`restaurants/${result.metadata.name}`)
            .getDownloadURL()
            .then((photoUrl) =>{
              imageBlob.push(photoUrl);
