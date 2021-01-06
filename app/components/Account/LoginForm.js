@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
 import { isEmpty } from "lodash";
-import {useNavigation} from "@react-navigation/native"
+import { useNavigation } from "@react-navigation/native";
 import * as firebase from "firebase";
-import {validateEmail} from "../../utils/Validations";
+import { validateEmail } from "../../utils/Validations";
 import Loading from "../Loading";
 
 export default function LoginForm(props) {
@@ -12,7 +12,7 @@ export default function LoginForm(props) {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState(defaultFormValue);
   const [loading, setLoading] = useState(false);
-const navigation = useNavigation();
+  const navigation = useNavigation();
   const onChange = (e, type) => {
     /*  console.log(e.nativeEvent.text);
     console.log(type); */
@@ -22,20 +22,20 @@ const navigation = useNavigation();
     if (isEmpty(formData.email) || isEmpty(formData.password)) {
       toastRef.current.show("Todos los campos son obligatorios ");
     } else if (!validateEmail(formData.email)) {
-      toastRef.current.show("Ingresar un correo institucional correcto!");
+      toastRef.current.show("Ingresar un correo electronico correcto!");
     } else {
       setLoading(true);
       firebase
-      .auth()
-      .signInWithEmailAndPassword(formData.email, formData.password)
-      .then(()=>{
-        setLoading(false);
-        navigation.navigate("account");
-      })
-      .catch(()=>{
-        setLoading(false);
-        toastRef.current.show("Correo y contraseña incorrectos");
-      })
+        .auth()
+        .signInWithEmailAndPassword(formData.email, formData.password)
+        .then(() => {
+          setLoading(false);
+          navigation.navigate("account");
+        })
+        .catch(() => {
+          setLoading(false);
+          toastRef.current.show("Correo y contraseña incorrectos");
+        });
     }
   };
   return (

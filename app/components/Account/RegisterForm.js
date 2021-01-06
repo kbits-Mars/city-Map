@@ -24,7 +24,7 @@ export default function RegisterForm(props) {
       toastRef.current.show("Todos los campos son obligatorios");
     } else if (!validateEmail(formData.email)) {
       //console.log("El email no es correcto");
-      toastRef.current.show("Ingresar un correo institucional correcto!");
+      toastRef.current.show("Ingresar un correo eletronico correcto!");
     } else if (formData.password !== formData.repeatPassword) {
       //console.log("Las contraseñas deben ser iguales");
       toastRef.current.show("Las contraseñas deben ser iguales");
@@ -40,7 +40,6 @@ export default function RegisterForm(props) {
         .then((response) => {
           setLoading(false);
           navigation.navigate("account");
-        
         })
         .catch(() => {
           setLoading(false);
@@ -60,7 +59,7 @@ export default function RegisterForm(props) {
   return (
     <View style={styles.formContainer}>
       <Input
-        placeholder="Correo Institucional"
+        placeholder="Correo Electronico"
         containerStyle={styles.inputForm}
         onChange={(e) => onChange(e, "email")}
         rightIcon={

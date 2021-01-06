@@ -4,22 +4,10 @@ import { Divider } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-easy-toast";
 import LoginForm from "../../components/Account/LoginForm";
-import LoginMicrosoft from "../../components/Account/LoginMicrosoft";
+import LoginFacebook from "../../components/Account/LoginFacebook";
 //import { AuthManager } from '../../auth/AuthManager';
 
 export default function Login() {
-
-  /*const  componentDidMount= async()=> {
-    try {
-      const accessToken = await AuthManager.getAccessTokenAsync();
-  
-      // TEMPORARY
-      this.setState({userName: accessToken, userLoading: false});
-    } catch (error) {
-      alert(error);
-    }
-  }*/
-
   const toastRef = useRef();
   return (
     <ScrollView>
@@ -35,7 +23,7 @@ export default function Login() {
       </View>
       <Divider style={styles.divider} />
       <View style={styles.viewContainer}>
-      <LoginMicrosoft/>
+        <LoginFacebook />
       </View>
       <Toast ref={toastRef} position="center" opacity={(0, 9)} />
     </ScrollView>
