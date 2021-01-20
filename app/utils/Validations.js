@@ -1,4 +1,6 @@
 export function validateEmail(email) {
-  const re = /^[a-zA-z]+\.[a-zA-z]+(@ug\.edu\.\ec)$/;   
+  const re =  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; 
+
+  
   return re.test(email);
 }
