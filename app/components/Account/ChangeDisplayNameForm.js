@@ -31,7 +31,7 @@ export default function ChangeDisplayNameForm(props){
                 setIsLoading(false);
                 setReloadUserInfo(true);
                 setShowModal(false);
-                console.log("se actualizo correctamente")}).
+                console.log("se actualizo correctamente el nombre")}).
             catch(()=>{
                 setIsLoading(false);
                 setError("Error al actualizar los datos");
