@@ -39,8 +39,8 @@ export default function ChangePasswordForm (props){
                     }
             }else if( size(formData.newPassword) <6){
                     errorsTemp={
-                        newPassword: "La contraseña tiene que ser mayor a 6 caracteres.",
-                        repeatNewPassword: "La contraseña tiene que ser mayor a 6 caracteres."
+                        newPassword: "La contraseña tiene que ser mayor a 8 caracteres.",
+                        repeatNewPassword: "La contraseña tiene que ser mayor a 8 caracteres."
                     }
              }else{
                 setIsLoading(true);
