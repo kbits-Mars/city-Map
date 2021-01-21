@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Alert,
-  Dimensions,
-  
-} from "react-native";
+import { StyleSheet, View, ScrollView, Alert, Dimensions } from "react-native";
 import { Icon, Avatar, Image, Input, Button } from "react-native-elements";
 import { map, size, filter, stubFalse } from "lodash";
 import * as Permissions from "expo-permissions";
@@ -16,104 +9,157 @@ import MapView from "react-native-maps";
 import uuid from "random-uuid-v4";
 import Modal from "../Modal";
 
-import {firebaseApp} from "../../utils/firebase";
+import { firebaseApp } from "../../utils/firebase";
 import firebase from "firebase/app";
 import "firebase/storage";
 import "firebase/firestore";
 
 const db = firebase.firestore(firebaseApp);
 
-
 const widthScreen = Dimensions.get("window").width;
 
 export default function AddRestaurantsForm(props) {
   const { toastRef, setIsLoading, navigation } = props;
-  const [classRoomName, setClassRoomName] = useState("");
-  const [classRoomSchool, setClassRoomSchool] = useState("");
-  const [classRoomDescription, setClassRoomDescription] = useState("");
+  const [restaurantName, setRestaurantName] = useState("");
+  const [restaurantAddress, setRestaurantAddress] = useState("");
+  const [restaurantDescription, setRestaurantDescription] = useState("");
+  const [restaurantPhone, setRestaurantPhone] = useState("");
+  const [restaurantHorario, setRestaurantHorario] = useState("");
+
   const [imagesSelected, setImagesSelected] = useState([]);
   const [isVisibleMap, setIsVisibleMap] = useState(false);
-  const [locationClassRoom, setLocationClassRoom] = useState(null);
+  const [locationRestaurant, setLocationRestaurant] = useState(null);
 
-  const addClassRoom = () => {
-    if (!classRoomName || !classRoomDescription || !classRoomSchool) {
+  // const addRestaurant = () => {
+  //   if (!classRoomName || !classRoomDescription || !classRoomSchool) {
+  //     toastRef.current.show(
+  //       "Todos los campos del formulario son obligatorios",
+  //       2000
+  //     );
+  //   } else if (size(imagesSelected) === 0) {
+  //     toastRef.current.show("El aula debe tener por lo menos una foto", 2000);
+  //   } else if (!locationRestaurant) {
+  //     toastRef.current.show(
+  //       "Tienes seleccionar una ubicación en el mapa para el aula ",
+  //       2000
+  //     );
+  //   } else {
+  //     setIsLoading(true);
+  //     uploadImageStorage().then((response) => {
+  //       db.collection("classRooms")
+  //         .add({
+  //           name: classRoomName,
+  //           school: classRoomSchool,
+  //           description: classRoomDescription,
+  //           location: locationRestaurant,
+  //           images: response,
+  //           rating: 0,
+  //           ratingTotal: 0,
+  //           quantityVoting: 0,
+  //           creatAt: new Date(),
+  //           createBy: firebase.auth().currentUser.uid,
+  //         })
+  //         .then(() => {
+  //           setIsLoading(false);
+  //           navigation.navigate("restaurants");
+  //         })
+  //         .catch(() => {
+  //           setIsLoading(false);
+  //           toastRef.current.show("Error al subir la aula, intentelo de nuevo");
+  //         });
+  //     });
+  //   }
+  // };
+
+  const addRestaurant = () => {
+    //validacion de datos para subir a firebase.
+    if (
+      !restaurantName ||
+      !restaurantAddress ||
+      !restaurantDescription ||
+      !restaurantPhone ||
+      !restaurantHorario
+    ) {
       toastRef.current.show(
         "Todos los campos del formulario son obligatorios",
         2000
       );
     } else if (size(imagesSelected) === 0) {
-      toastRef.current.show("El aula debe tener por lo menos una foto", 2000);
-    } else if (!locationClassRoom) {
       toastRef.current.show(
-        "Tienes seleccionar una ubicación en el mapa para el aula ",
+        "El Restaurante debe tener por lo menos una foto",
+        2000
+      );
+    } else if (!locationRestaurant) {
+      toastRef.current.show(
+        "Tienes seleccionar una ubicación para el restaurante ",
         2000
       );
     } else {
       setIsLoading(true);
-      uploadImageStorage().then((response) =>{
-        
-
-        db.collection("classRooms")
-           .add({
-             name: classRoomName,
-             school: classRoomSchool,
-             description: classRoomDescription,
-             location: locationClassRoom,
-             images: response,
-             rating: 0,
-             ratingTotal: 0,
-             quantityVoting: 0,
-             creatAt: new Date(),
-             createBy: firebase.auth().currentUser.uid,
-
-           })
-           .then(()=>{
+      uploadImageStoreage().then((response) => {
+        db.collection("restaureants")
+          .add({
+            name: restaurantName,
+            phone: restaurantPhone,
+            horario: restaurantHorario,
+            address: restaurantAddress,
+            description: restaurantDescription,
+            location: locationRestaurant,
+            images: response,
+            rating: 0,
+            ratingTotal: 0,
+            queantityVoting: 0,
+            createAT: new Date(),
+            createBy: firebase.auth().currentUser.uid,
+          })
+          .then(() => {
             setIsLoading(false);
-            navigation.navigate("restaurants");
-           }).catch(()=>{
-             setIsLoading(false);
-             toastRef.current.show("Error al subir la aula, intentelo de nuevo");
-           })
+            navegation.navigate("restaurants");
+          })
+          .catch(() => {
+            setIsLoading(false);
+            toastRef.current.show(
+              "Error al momento de registar el restaurante, intentar en un momento ",
+              2000
+            );
+          });
       });
-
     }
   };
-
-  const uploadImageStorage= async ()=>{
+  const uploadImageStoreage = async () => {
     //console.log(imagesSelected);
-    const imageBlob= [];
+    const imageBlob = [];
     await Promise.all(
       map(imagesSelected, async (image) => {
         const response = await fetch(image);
         const blob = await response.blob();
-        const ref= firebase.storage().ref("restaurants").child(uuid());
-         await ref.put(blob).then(async (result) =>{
-            await firebase
-           .storage()
-           .ref(`restaurants/${result.metadata.name}`)
-           .getDownloadURL()
-           .then((photoUrl) =>{
-             imageBlob.push(photoUrl);
-           })
-         })
+        const ref = firebase.storage().ref("restaurants").child(uuid());
+        await ref.put(blob).then(async (result) => {
+          await firebase
+            .storage()
+            .ref(`restaurants/${result.metadata.name}`)
+            .getDownloadURL()
+            .then((photoUrl) => {
+              imageBlob.push(photoUrl);
+            });
+        });
       })
     );
-   
 
     return imageBlob;
-    
-  }
-
+  };
 
   return (
     <ScrollView style={styles.scrollView}>
-      <ImageClassRoom imagenClassRoom={imagesSelected[0]} />
+      <ImageRestaurant imageRestaurant={imagesSelected[0]} />
       <FormAdd
-        setClassRoomName={setClassRoomName}
-        setClassRoomSchool={setClassRoomSchool}
-        setClassRoomDescription={setClassRoomDescription}
+        setRestaurantName={setRestaurantName}
+        setRestaurantAddress={setRestaurantAddress}
+        setRestaurantDescription={setRestaurantDescription}
+        setRestaurantPhone={setRestaurantPhone}
+        setRestaurantHorario={setRestaurantHorario}
         setIsVisibleMap={setIsVisibleMap}
-        locationClassRoom={locationClassRoom}
+        locationRestaurant={locationRestaurant}
       />
       <UploadImage
         toastRef={toastRef}
@@ -121,29 +167,28 @@ export default function AddRestaurantsForm(props) {
         setImagesSelected={setImagesSelected}
       />
       <Button
-        title="Crear Aula"
-        onPress={addClassRoom}
-        buttonStyle={styles.btnAddClassRoom}
+        title="Crear Restaurante"
+        onPress={addRestaurant}
+        buttonStyle={styles.btnaddRestaurant}
       />
 
       <Map
         isVisibleMap={isVisibleMap}
         setIsVisibleMap={setIsVisibleMap}
-        setLocationClassRoom={setLocationClassRoom}
+        setLocationRestaurant={setLocationRestaurant}
         toastRef={toastRef}
       />
     </ScrollView>
   );
 }
-
-function ImageClassRoom(props) {
-  const { imagenClassRoom } = props;
+function ImageRestaurant(props) {
+  const { imageRestaurant } = props;
   return (
     <View styles={styles.viewPhoto}>
       <Image
         source={
-          imagenClassRoom
-            ? { uri: imagenClassRoom }
+          imageRestaurant
+            ? { uri: imageRestaurant }
             : require("../../../assets/img/no-image.png")
         }
         style={{ width: widthScreen, height: 200 }}
@@ -154,116 +199,51 @@ function ImageClassRoom(props) {
 
 function FormAdd(props) {
   const {
-    setClassRoomName,
-    setClassRoomSchool,
-    setClassRoomDescription,
+    setRestaurantName,
+    setRestaurantAddress,
+    setRestaurantDescription,
+    setRestaurantPhone,
+    setRestaurantHorario,
     setIsVisibleMap,
-    locationClassRoom,
+    locationRestaurant,
   } = props;
   return (
     <View style={styles.viewForm}>
       <Input
-        placeholder="Numero del Aula "
+        placeholder="Nombre del Restaurante "
         containerStyle={styles.input}
-        onChange={(e) => setClassRoomName(e.nativeEvent.text)}
+        onChange={(e) => setRestaurantName(e.nativeEvent.text)}
+      />
+      <Input
+        containerStyle={styles.input}
+        placeholder="Numeros de Contacto"
+        onChange={(e) => setRestaurantPhone(e.nativeEvent.text)}
+      />
+      <Input
+        containerStyle={styles.input}
+        placeholder="Horarios de Atencion"
+        onChange={(e) => setRestaurantHorario(e.nativeEvent.text)}
       />
 
       <Input
-        placeholder="Facultad"
+        placeholder="Direccion"
         containerStyle={styles.input}
-        onChange={(e) => setClassRoomSchool(e.nativeEvent.text)}
+        onChange={(e) => setRestaurantAddress(e.nativeEvent.text)}
         rightIcon={{
           type: "material-community",
           name: "google-maps",
-          color: (!locationClassRoom ? "#c2c2c2" : "#00a680"),
+          color: !locationRestaurant ? "#c2c2c2" : "#00a680",
           onPress: () => setIsVisibleMap(true),
         }}
       />
 
       <Input
-        placeholder="Descripcion del Aula"
+        placeholder="Descripcion del restaurante"
         multiline={true}
         inputContainerStyle={styles.textArea}
-        onChange={(e) => setClassRoomDescription(e.nativeEvent.text)}
+        onChange={(e) => setRestaurantDescription(e.nativeEvent.text)}
       />
     </View>
-  );
-}
-function Map(props) {
-  const {
-    isVisibleMap,
-    setIsVisibleMap,
-    setLocationClassRoom,
-    toastRef,
-  } = props;
-  const [location, setLocation] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      const resultPermissions = await Permissions.askAsync(
-        Permissions.LOCATION
-      );
-
-      const statusPermissions = resultPermissions.permissions.location.status;
-      if (statusPermissions !== "granted") {
-        toastRef.current.show(
-          "Tienes que aceptar los permisos de localización para crear una aula ",
-          3000
-        );
-      } else {
-        const loc = await Location.getCurrentPositionAsync({});
-        console.log(loc);
-        setLocation({
-          latitude: loc.coords.latitude,
-          longitude: loc.coords.longitude,
-          latitudeDelta: 0.001,
-          longitudeDelta: 0.001,
-        });
-      }
-    })();
-  }, []);
-
-  const confirmLocation = () => {
-    setLocationClassRoom(location);
-    toastRef.current.show("Localización guardada correctamente");
-    setIsVisibleMap(false);
-  };
-
-  return (
-    <Modal isVisible={isVisibleMap} setIsVisible={setIsVisibleMap}>
-      <View>
-        {location && (
-          <MapView
-            style={styles.mapStyle}
-            initialRegion={location}
-            showsUserLocation={true}
-            onRegionChange={(region) => setLocation(region)}
-          >
-            <MapView.Marker
-              coordinate={{
-                latitude: location.latitude,
-                longitude: location.longitude,
-              }}
-              draggable
-            />
-          </MapView>
-        )}
-        <View style={styles.viewMapBtn}>
-          <Button
-            title="Guardar Ubicación"
-            containerStyle={styles.viewMapBtnContainerSave}
-            buttonStyle={styles.viewMapBtnSave}
-            onPress={confirmLocation}
-          />
-          <Button
-            title="cancelar Ubicación"
-            containerStyle={styles.viewMapBtnContaincerCancel}
-            buttonStyle={styles.viewMapBtnCancel}
-            onPress={() => setIsVisibleMap(false)}
-          />
-        </View>
-      </View>
-    </Modal>
   );
 }
 
@@ -321,22 +301,100 @@ function UploadImage(props) {
       {size(imagesSelected) < 4 && (
         <Icon
           type="material-community"
-          name="camera"
+          name="camera-plus"
           color="#7a7a7a"
-          inputContainerStyle={styles.containerIcon}
+          containerStyle={styles.containerIcon}
           onPress={imagesSelect}
         />
       )}
 
-      {map(imagesSelected, (imageClassRoom, index) => (
+      {map(imagesSelected, (imageRestaurant, index) => (
         <Avatar
           key={index}
           style={styles.miniatureStyle}
-          source={{ uri: imageClassRoom }}
-          onPress={() => removeImage(imageClassRoom)}
+          source={{ uri: imageRestaurant }}
+          onPress={() => removeImage(imageRestaurant)}
         />
       ))}
     </View>
+  );
+}
+
+function Map(props) {
+  const {
+    isVisibleMap,
+    setIsVisibleMap,
+    setLocationRestaurant,
+    toastRef,
+  } = props;
+  const [location, setLocation] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const resultPermissions = await Permissions.askAsync(
+        Permissions.LOCATION
+      );
+
+      const statusPermissions = resultPermissions.permissions.location.status;
+      if (statusPermissions !== "granted") {
+        toastRef.current.show(
+          "Tienes que aceptar los permisos de localización para crear una aula ",
+          3000
+        );
+      } else {
+        const loc = await Location.getCurrentPositionAsync({});
+        console.log(loc);
+        setLocation({
+          latitude: loc.coords.latitude,
+          longitude: loc.coords.longitude,
+          latitudeDelta: 0.001,
+          longitudeDelta: 0.001,
+        });
+      }
+    })();
+  }, []);
+
+  const confirmLocation = () => {
+    setLocationRestaurant(location);
+    toastRef.current.show("Localización guardada correctamente");
+    setIsVisibleMap(false);
+  };
+
+  return (
+    <Modal isVisible={isVisibleMap} setIsVisible={setIsVisibleMap}>
+      <View>
+        {location && (
+          <MapView
+            style={styles.mapStyle}
+            initialRegion={location}
+            showsUserLocation={true}
+            onRegionChange={(region) => setLocation(region)}
+          >
+            <MapView.Marker
+              coordinate={{
+                latitude: location.latitude,
+                longitude: location.longitude,
+              }}
+              draggable
+            />
+          </MapView>
+        )}
+        <View style={styles.viewMapBtn}>
+          <Button
+            title="Guardar Ubicación"
+            containerStyle={styles.viewMapBtnContainerSave}
+            buttonStyle={styles.viewMapBtnSave}
+            onPress={confirmLocation}
+          />
+          <Button
+            title="cancelar Ubicación"
+            containerStyle={styles.viewMapBtnContaincerCancel}
+            buttonStyle={styles.viewMapBtnCancel}
+            onPress={() => setIsVisibleMap(false)}
+          />
+        </View>
+      </View>
+    </Modal>
   );
 }
 
@@ -357,7 +415,7 @@ const styles = StyleSheet.create({
     padding: 0,
     margin: 0,
   },
-  btnAddClassRoom: {
+  btnaddRestaurant: {
     backgroundColor: "#F97666",
     margin: 20,
   },
