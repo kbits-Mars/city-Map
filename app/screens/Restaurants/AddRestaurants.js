@@ -1,26 +1,23 @@
 import React, { useState, useRef } from "react";
-import { View} from "react-native";
+import { View } from "react-native";
 import Toast from "react-native-easy-toast";
 import Loading from "../../components/Loading";
-import AddClassRoomsForm from "../../components/Restaurants/AddRestaurantsForm";
-
-
-
+import AddRestaurantsForm from "../../components/Restaurants/AddRestaurantsForm";
 
 export default function AddRestaurants(props) {
-  const {navigation} = props;
-  const [isLoading, setIsLoading] = useState(false)
-  const toastRef= useRef();
+  const { navigation } = props;
+  const [isLoading, setIsLoading] = useState(false);
+  const toastRef = useRef();
   console.log(props);
   return (
     <View>
-      <AddClassRoomsForm
+      <AddRestaurantsForm
         toastRef={toastRef}
         setIsLoading={setIsLoading}
         navigation={navigation}
       />
-      <Toast ref={toastRef} position="center" opacity={0.9}/>
-      <Loading isVisible={isLoading} text="Creando Restaurante"/>
+      <Toast ref={toastRef} position="center" opacity={0.9} />
+      <Loading isVisible={isLoading} text="Creando Restaurante" />
     </View>
   );
 }
