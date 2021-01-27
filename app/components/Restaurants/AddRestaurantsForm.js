@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, View, ScrollView, Alert, Dimensions } from "react-native";
 import { Icon, Avatar, Image, Input, Button } from "react-native-elements";
 import { map, size, filter, stubFalse } from "lodash";
+import {navigation} from "@react-navigation/native";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
@@ -97,7 +98,7 @@ export default function AddRestaurantsForm(props) {
     } else {
       setIsLoading(true);
       uploadImageStoreage().then((response) => {
-        db.collection("restaureants")
+        db.collection("restaurants")
           .add({
             name: restaurantName,
             phone: restaurantPhone,
@@ -114,10 +115,12 @@ export default function AddRestaurantsForm(props) {
           })
           .then(() => {
             setIsLoading(false);
-            navegation.navigate("restaurants");
+            navigation.navigate("restaurants");
+            
           })
           .catch(() => {
             setIsLoading(false);
+           
             toastRef.current.show(
               "Error al momento de registar el restaurante, intentar en un momento ",
               2000
@@ -167,9 +170,22 @@ export default function AddRestaurantsForm(props) {
         setImagesSelected={setImagesSelected}
       />
       <Button
+       title=" Añadir una experiencia AR"
+       buttonStyle={styles.btnAr}
+       icon={
+            <Icon
+              name="augmented-reality"
+              type="material-community"
+              iconStyle={styles.iconAR}
+            />
+          }
+         onPress={()=> navigation.navigate("realidad-aumentada")} 
+      /> 
+      <Button
         title="Crear Restaurante"
         onPress={addRestaurant}
         buttonStyle={styles.btnaddRestaurant}
+    
       />
 
       <Map
@@ -343,7 +359,7 @@ function Map(props) {
         );
       } else {
         const loc = await Location.getCurrentPositionAsync({});
-        console.log(loc);
+        // console.log(loc);
         setLocation({
           latitude: loc.coords.latitude,
           longitude: loc.coords.longitude,
@@ -400,7 +416,8 @@ function Map(props) {
 
 const styles = StyleSheet.create({
   scrollView: {
-    height: "100%",
+    height: "96%",
+  
   },
   viewForm: {
     marginLeft: 10,
@@ -418,6 +435,7 @@ const styles = StyleSheet.create({
   btnaddRestaurant: {
     backgroundColor: "#F97666",
     margin: 20,
+    
   },
   viewImages: {
     flexDirection: "row",
@@ -464,4 +482,18 @@ const styles = StyleSheet.create({
   viewMapBtnSave: {
     backgroundColor: "#00a680",
   },
+  iconAR:{
+    marginRight:10,
+    color: "#FFFFFF"
+
+  },
+  btnAr:{
+    backgroundColor: "#F97666",
+    marginBottom:10,
+    marginTop:20,
+    marginLeft:40,
+    marginRight:40,
+    borderRadius: 20
+   
+  }
 });
