@@ -32,9 +32,10 @@ export default function ChangeDisplayNameForm(props){
                 setReloadUserInfo(true);
                 setShowModal(false);
 
+
                 toastRef.current.show("se actualizo correctamente");
                 
-            })
+            }).
             catch(()=>{
                 setIsLoading(false);
                 setError("Error al actualizar los datos");
