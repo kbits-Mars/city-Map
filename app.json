@@ -31,7 +31,12 @@
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION"
       ],
-      "package": "com.yourcompany.yourappname",
+      "package": "com.kevinproanoricardobonilla.citymap",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBPk5xkI98kwT0ovYJjmHbo_5-8MrNHiEM"
+        }
+      },
       "versionCode": 1
     },
     "description": ""
