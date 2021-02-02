@@ -1,24 +1,27 @@
 import React from "react";
 import { StyleSheet, View, ScrollView, Text, Image } from "react-native";
 import { Button } from "react-native-elements";
-import {NavigationHelpersContext, useNavigation} from "@react-navigation/native";
+import {
+  NavigationHelpersContext,
+  useNavigation,
+} from "@react-navigation/native";
 
 export default function UserGuest() {
   const navigation = useNavigation();
-  
+
   return (
     <ScrollView centerContent={true} style={styles.viewBody}>
       <Image
-        source={require("../../../assets/img/Login-map1.png")}
+        source={require("../../../assets/img/logo2.jpg")}
         resizeMode="contain"
         style={styles.image}
       />
 
-      <Text style={styles.title}>Consulta tu perfil de ug map</Text>
+      <Text style={styles.title}>Consulta tu perfil</Text>
       <Text style={styles.description}>
-        ¿buscas una aula en espefica en tu facultad? Busca y visualiza la mejor
-        ruta para llegar a una aula de una forma sencilla, nostros te guiaremos
-        y comenta como ha sido tu experiecia.
+        ¿Estas buscando nuevos restaurantes? Busca nuevas opciones de alimentos
+        para que puedas disfrutar, obten la ruta para que puedas llegar y
+        comenta tu experiencia.
       </Text>
 
       <View style={styles.viewBtn}>
@@ -40,7 +43,8 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    height: 300,
+    marginTop: 50,
+    height: 225,
     width: "100%",
     marginBottom: 40,
   },
@@ -54,14 +58,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 20,
   },
-  viewBtn:{
-   flex: 1,
-   alignItems:"center",
+  viewBtn: {
+    flex: 1,
+    alignItems: "center",
   },
   btnStyle: {
     backgroundColor: "#F97666",
   },
   btnContainer: {
-    width: "70%"
+    width: "70%",
   },
 });

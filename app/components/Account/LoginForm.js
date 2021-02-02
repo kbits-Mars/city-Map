@@ -41,7 +41,7 @@ export default function LoginForm(props) {
   return (
     <View style={styles.formContainer}>
       <Input
-        placeholder="Correo Institucional"
+        placeholder="Correo Electronico"
         containerStyle={styles.inputForm}
         onChange={(e) => onChange(e, "email")}
         rightIcon={
