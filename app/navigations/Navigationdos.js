@@ -41,7 +41,7 @@ export default function Navigation() {
           component={TopStack}
           options={{ title: "Top 5" }}
         />
-       
+
         <Tab.Screen
           name="search"
           component={SearchStack}
@@ -76,14 +76,14 @@ function screenOptions(route, color) {
       break;
 
     case "search":
-      iconName="map-search";
+      iconName = "map-search";
       break;
 
     case "top":
-      iconName="google-classroom"
-    break;
+      iconName = "google-classroom";
+      break;
     case "account":
-      iconName="login";
+      iconName = "login";
       break;
     default:
       break;

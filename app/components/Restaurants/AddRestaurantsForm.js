@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, View, ScrollView, Alert, Dimensions } from "react-native";
 import { Icon, Avatar, Image, Input, Button } from "react-native-elements";
 import { map, size, filter, stubFalse } from "lodash";
-import {navigation} from "@react-navigation/native";
+import { navigation } from "@react-navigation/native";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
@@ -30,47 +30,6 @@ export default function AddRestaurantsForm(props) {
   const [imagesSelected, setImagesSelected] = useState([]);
   const [isVisibleMap, setIsVisibleMap] = useState(false);
   const [locationRestaurant, setLocationRestaurant] = useState(null);
-
-  // const addRestaurant = () => {
-  //   if (!classRoomName || !classRoomDescription || !classRoomSchool) {
-  //     toastRef.current.show(
-  //       "Todos los campos del formulario son obligatorios",
-  //       2000
-  //     );
-  //   } else if (size(imagesSelected) === 0) {
-  //     toastRef.current.show("El aula debe tener por lo menos una foto", 2000);
-  //   } else if (!locationRestaurant) {
-  //     toastRef.current.show(
-  //       "Tienes seleccionar una ubicación en el mapa para el aula ",
-  //       2000
-  //     );
-  //   } else {
-  //     setIsLoading(true);
-  //     uploadImageStorage().then((response) => {
-  //       db.collection("classRooms")
-  //         .add({
-  //           name: classRoomName,
-  //           school: classRoomSchool,
-  //           description: classRoomDescription,
-  //           location: locationRestaurant,
-  //           images: response,
-  //           rating: 0,
-  //           ratingTotal: 0,
-  //           quantityVoting: 0,
-  //           creatAt: new Date(),
-  //           createBy: firebase.auth().currentUser.uid,
-  //         })
-  //         .then(() => {
-  //           setIsLoading(false);
-  //           navigation.navigate("restaurants");
-  //         })
-  //         .catch(() => {
-  //           setIsLoading(false);
-  //           toastRef.current.show("Error al subir la aula, intentelo de nuevo");
-  //         });
-  //     });
-  //   }
-  // };
 
   const addRestaurant = () => {
     //validacion de datos para subir a firebase.
@@ -116,11 +75,10 @@ export default function AddRestaurantsForm(props) {
           .then(() => {
             setIsLoading(false);
             navigation.navigate("restaurants");
-            
           })
           .catch(() => {
             setIsLoading(false);
-           
+
             toastRef.current.show(
               "Error al momento de registar el restaurante, intentar en un momento ",
               2000
@@ -170,22 +128,21 @@ export default function AddRestaurantsForm(props) {
         setImagesSelected={setImagesSelected}
       />
       <Button
-       title=" Añadir una experiencia AR"
-       buttonStyle={styles.btnAr}
-       icon={
-            <Icon
-              name="augmented-reality"
-              type="material-community"
-              iconStyle={styles.iconAR}
-            />
-          }
-         onPress={()=> navigation.navigate("realidad-aumentada")} 
-      /> 
+        title=" Añadir una experiencia AR"
+        buttonStyle={styles.btnAr}
+        icon={
+          <Icon
+            name="augmented-reality"
+            type="material-community"
+            iconStyle={styles.iconAR}
+          />
+        }
+        onPress={() => navigation.navigate("realidad-aumentada")}
+      />
       <Button
         title="Crear Restaurante"
         onPress={addRestaurant}
         buttonStyle={styles.btnaddRestaurant}
-    
       />
 
       <Map
@@ -417,7 +374,6 @@ function Map(props) {
 const styles = StyleSheet.create({
   scrollView: {
     height: "96%",
-  
   },
   viewForm: {
     marginLeft: 10,
@@ -435,7 +391,6 @@ const styles = StyleSheet.create({
   btnaddRestaurant: {
     backgroundColor: "#F97666",
     margin: 20,
-    
   },
   viewImages: {
     flexDirection: "row",
@@ -482,18 +437,16 @@ const styles = StyleSheet.create({
   viewMapBtnSave: {
     backgroundColor: "#00a680",
   },
-  iconAR:{
-    marginRight:10,
-    color: "#FFFFFF"
-
+  iconAR: {
+    marginRight: 10,
+    color: "#FFFFFF",
   },
-  btnAr:{
+  btnAr: {
     backgroundColor: "#F97666",
-    marginBottom:10,
-    marginTop:20,
-    marginLeft:40,
-    marginRight:40,
-    borderRadius: 20
-   
-  }
+    marginBottom: 10,
+    marginTop: 20,
+    marginLeft: 40,
+    marginRight: 40,
+    borderRadius: 20,
+  },
 });
