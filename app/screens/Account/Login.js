@@ -12,7 +12,7 @@ export default function Login() {
   return (
     <ScrollView>
       <Image
-        source={require("../../../assets/img/Login-map.png")}
+        source={require("../../../assets/img/logo2.jpg")}
         resizeMode="contain"
         style={styles.logo}
       />
@@ -47,7 +47,7 @@ function CreateAccount() {
 const styles = StyleSheet.create({
   logo: {
     width: "100%",
-    height: 350,
+    height: 225,
     marginTop: 20,
   },
   viewContainer: {
