@@ -1,46 +1,51 @@
-import React from "react";
+import React, {useState,useEffect,useRef} from "react";
 import { StyleSheet, View, ScrollView, Text, Image } from "react-native";
+import Toast from "react-native-easy-toast";
 import { Button } from "react-native-elements";
-import {NavigationHelpersContext, useNavigation} from "@react-navigation/native";
+import ListTopRestaurant from "../components/Rating/ListTopRestaurant"
+// import {NavigationHelpersContext, useNavigation} from "@react-navigation/native";
+import firebaseApp from "../utils/firebase";
+import firebase from "firebase/app";
+import "firebase/firestore";
+const db= firebase.firestore(firebaseApp);
 
-export default function Mejores(){
-    const navigation = useNavigation();
+export default function Mejores(props){
+    const {navigation}= props;
+    const [restaurants, setRestaurants] = useState(null);
+    const toastRef = useRef(null);
+     
+  
+
+    useEffect(() => {
+
+      db.collection("restaurants")
+      .orderBy("rating", "desc")
+      .limit(5)
+      .get()
+      .then((response)=>{
+
+        arrayRestaurants=[];
+
+        response.forEach((doc)=>{
+            const data = doc.data();
+            data.id= doc.id;
+            arrayRestaurants.push(data);
+        })
+
+          setRestaurants(arrayRestaurants);
+
+      })
+
+    }, [])
 
     return(
 
-    
             <ScrollView centerContent={true} style={styles.viewBody}>
-              {/* <Image
-                source={require("../../assets/img/map.png")}
-                resizeMode="contain"
-                style={styles.image}
-              /> */}
-        
-              <Text style={styles.title}>INTEGRANTES</Text>
-            
-
-              <Text style={styles.description}>
-              
-              BONILLA LANDIVAR RICARDO JESUS
-            
-           
-
-              </Text>
-
-              <Text style={styles.description}>
-              
-              PROAÑO INDACOCHEA KEVIN MARCELO
-         
-
-              </Text>
-
-          
-
              
-        
-             
-              
-             
+             <ListTopRestaurant restaurants={restaurants} navigation={navigation}/>
+
+              <Toast ref={toastRef}   position={"center"}   opacity={0.9}/>
+
             </ScrollView>
         
     );
@@ -52,30 +57,6 @@ const styles = StyleSheet.create({
       marginRight: 30,
     },
   
-    image: {
-      height: 300,
-      width: "100%",
-      marginBottom: 40,
-    },
-    title: {
-      fontWeight: "bold",
-      fontSize: 19,
-      marginBottom: 10,
-      textAlign: "center",
-    },
-    description: {
-      textAlign: "center",
-      marginBottom: 20,
-    },
-    viewBtn:{
-     flex: 1,
-     alignItems:"center",
-    },
-    btnStyle: {
-      backgroundColor: "#00a680",
-    },
-    btnContainer: {
-      width: "70%"
-    },
+   
   });
   

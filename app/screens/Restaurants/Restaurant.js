@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { StyleSheet, Text, View, ScrollView, Dimensions } from "react-native";
 import { map } from "lodash";
 import { Rating, ListItem, Icon } from "react-native-elements";
+import Toast from "react-native-easy-toast";
 import Loading from "../../components/Loading";
 import Carousel from "../../components/Carousel";
 import { useFocusEffect } from "@react-navigation/native";
@@ -21,6 +22,9 @@ export default function Restaurant(props) {
   const { name, id } = route.params;
   const [restaurant, setRestaurant] = useState(null);
   const [rating, setRating] = useState(0);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [userLogged, setUserLogged] = useState(false);
+  const toastRef = useRef();
   navigation.setOptions({ title: name.substr(0, 28) + "..." });
   //console.log(restaurant);
 
@@ -38,10 +42,96 @@ export default function Restaurant(props) {
     }, [])
   );
 
+  useEffect(() => {
+    if(userLogged && restaurant){
+
+      db.collection("favoritos")
+      .where("idRestaurant","==",restaurant.id)
+      .where("idUser","==",firebase.auth().currentUser.uid)
+      .get()
+      .then((response)=>{
+        if(response.docs.length===1){
+          setIsFavorite(true);
+        }
+      }).catch(()=>{
+        toastRef.current.show("error al actualizar");
+      })
+
+    }
+    
+  }, [userLogged,restaurant])
+
   if (!restaurant) return <Loading isVisible={true} text="Cargando..." />;
+
+  firebase.auth().onAuthStateChanged((user)=>{
+     
+    (user) ? setUserLogged(true) : setUserLogged(false);
+
+  });
+
+  const addFavorites=()=>{
+    if(!userLogged){
+      toastRef.current.show("Para añadir un restaurante en favoritos debe estar logueado",3000);
+    }else{
+
+      const paylodad={
+        idUser: firebase.auth().currentUser.uid,
+        idRestaurant: restaurant.id
+      }
+
+        db.collection("favoritos").
+        add(paylodad).
+        then(()=>{
+          setIsFavorite(true);
+          toastRef.current.show("restaurante añadido a favoritos",3000);
+        }).catch(()=>{
+          toastRef.current.show("error al añadir al restaurante a favoritos",3000);
+        })
+
+     
+    }
+
+   
+  }
+
+  const removeFavorites=()=>{
+    db.collection("favoritos")
+    .where("idRestaurant","==",restaurant.id)
+    .where("idUser","==",firebase.auth().currentUser.uid)
+    .get()
+    .then((response)=>{
+       response.forEach((doc)=>{
+              const idFavoritos= doc.id;
+
+
+              db.collection("favoritos")
+              .doc(idFavoritos)
+              .delete()
+              .then(()=>{
+                setIsFavorite(false);
+                toastRef.current.show("Se elimino el restaurante en favoritos");
+              }).catch(()=>{
+       
+               toastRef.current.show("error al eliminar el restaurante en favoritos");
+              })
+       });
+     
+    })
+  }
 
   return (
     <ScrollView vertical style={styles.viewBody}>
+      <View style={styles.viewFavorito}>
+        <Icon
+         type="material-community"
+         name= {(isFavorite) ? "heart" :"heart-outline"}
+         color={(isFavorite) ? "#FF0000" : "#000"}
+         underlayColor="transparent"
+         size= {35}
+         onPress= {(isFavorite) ? removeFavorites: addFavorites}
+         
+        />
+      </View>
       <Carousel
         arrayImages={restaurant.images}
         height={250}
@@ -60,6 +150,9 @@ export default function Restaurant(props) {
         horario={restaurant.horario}
       />
       <ListReviews navigation={navigation} idRestaurant={restaurant.id} />
+
+      <Toast ref={toastRef} position="center" opacity={0.9}/> 
+      
     </ScrollView>
   );
 }
@@ -163,4 +256,15 @@ const styles = StyleSheet.create({
     borderBottomColor: "#d8d8d8",
     borderBottomWidth: 1,
   },
+  viewFavorito:{
+    position:"absolute",
+    backgroundColor:"#fff",
+    zIndex: 5,
+    top: 0,
+    right: 0,
+    borderBottomLeftRadius: 100,
+    padding: 5,
+    paddingLeft: 15
+
+  }
 });
