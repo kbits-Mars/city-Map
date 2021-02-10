@@ -13,6 +13,13 @@ export default function LoginForm(props) {
   const [formData, setFormData] = useState(defaultFormValue);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+
+  firebase.auth().onAuthStateChanged((user)=>{
+
+     user && navigation.navigate("account");
+
+  })
+
   const onChange = (e, type) => {
     /*  console.log(e.nativeEvent.text);
     console.log(type); */
@@ -30,7 +37,7 @@ export default function LoginForm(props) {
         .signInWithEmailAndPassword(formData.email, formData.password)
         .then(() => {
           setLoading(false);
-          navigation.navigate("account");
+          navigation.goBack();
         })
         .catch(() => {
           setLoading(false);
